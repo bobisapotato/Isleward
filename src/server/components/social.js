@@ -56,7 +56,7 @@ module.exports = {
 			data: {
 				messages: [{
 					class: color || 'q0',
-					message: msg,
+					msg,
 					type: 'chat'
 				}]
 			}

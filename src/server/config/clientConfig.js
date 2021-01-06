@@ -155,7 +155,6 @@ const config = {
 		'target',
 		'menu',
 		'spells',
-		'messages',
 		'online',
 		'mainMenu',
 		'context',

@@ -3,21 +3,25 @@ const events = require('../../misc/events');
 const profanities = require('../../misc/profanities');
 const canChat = require('./canChat');
 
-const sendRegularMessage = ({ obj }, msg) => {
-	let charname = obj.auth.charname;
+const sendRegularMessage = ({ obj }, messageInfo) => {
+	const { source, msg, item } = messageInfo;
 
-	let prefix = roles.getRoleMessagePrefix(obj) || '';
-	let msgStyle = roles.getRoleMessageStyle(obj) || 'color-grayB';
+	const prefix = roles.getRoleMessagePrefix(obj) || '';
+	const prefixClass = roles.getRoleMessageStyle(obj) || 'color-grayB';
+
+	const msgClass = item ? `q${item.quality}` : 'color-grayB';
 
 	cons.emit('event', {
 		event: 'onGetMessages',
 		data: {
 			messages: [{
-				class: msgStyle,
-				message: prefix + charname + ': ' + msg.data.message,
-				item: msg.data.item,
 				type: 'chat',
-				source: obj.name
+				source,
+				prefix,
+				prefixClass,
+				msg,
+				msgClass,
+				item
 			}]
 		}
 	});
@@ -197,11 +201,12 @@ module.exports = (cpnSocial, msg) => {
 		return;
 	}
 
-	let msgEvent = {
+	const msgEvent = {
 		source: obj.auth.charname,
 		sourceObj: obj,
 		msg: messageString,
 		ignore: false,
+		item: msg.data.item,
 		error: null
 	};
 	events.emit('onBeforeSendMessage', msgEvent);
@@ -228,5 +233,5 @@ module.exports = (cpnSocial, msg) => {
 	if (!messageHandler)
 		return;
 
-	messageHandler(cpnSocial, msg);
+	messageHandler(cpnSocial, msgEvent);
 };
