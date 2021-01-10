@@ -11,19 +11,19 @@ const sendRegularMessage = ({ obj }, messageInfo) => {
 
 	const msgClass = item ? `q${item.quality}` : 'color-grayB';
 
+	const msgData = {
+		type: 'chat',
+		source,
+		prefix,
+		prefixClass,
+		msg,
+		msgClass,
+		item
+	};
+
 	cons.emit('event', {
 		event: 'onGetMessages',
-		data: {
-			messages: [{
-				type: 'chat',
-				source,
-				prefix,
-				prefixClass,
-				msg,
-				msgClass,
-				item
-			}]
-		}
+		data: { messages: [msgData] }
 	});
 };
 
